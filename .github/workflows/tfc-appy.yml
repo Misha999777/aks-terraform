@@ -9,7 +9,19 @@ jobs:
   terraform-cloud-apply-run:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "TF_CLOUD_ORGANIZATION=${{ vars.TF_CLOUD_ORGANIZATION }}"
-      - run: echo "TF_WORKSPACE=${{ vars.TF_WORKSPACE }}"
-      - run: echo "TF_API_TOKEN is set"
-        if: ${{ secrets.TF_API_TOKEN != '' }}
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Check TF_CLOUD_ORGANIZATION and TF_WORKSPACE
+        run: |
+          echo "TF_CLOUD_ORGANIZATION=${{ vars.TF_CLOUD_ORGANIZATION }}"
+          echo "TF_WORKSPACE=${{ env.TF_WORKSPACE }}"
+
+      - name: Check if TF_API_TOKEN is set
+        run: |
+          if [ -z "${{ secrets.TF_API_TOKEN }}" ]; then
+            echo "TF_API_TOKEN is not set"
+            exit 1
+          else
+            echo "TF_API_TOKEN is set"
+          fi
