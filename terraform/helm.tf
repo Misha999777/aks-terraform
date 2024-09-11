@@ -35,5 +35,5 @@ resource "helm_release" "cgm" {
     clientId = azurerm_user_assigned_identity.workload-identity.client_id
   })]
 
-  depends_on = [azurerm_kubernetes_cluster.k8s]
+  depends_on = [helm_release.external-dns]
 }
