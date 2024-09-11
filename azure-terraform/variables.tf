@@ -21,3 +21,14 @@ variable "nodes_max" {
   default     = "5"
   description = "Maximum amount of nodes in node pool."
 }
+
+variable "domain_name" {
+  type        = string
+  default     = "cgm-azure.pp.ua"
+  description = "Domain name for the DNS zone."
+}
+
+variable "cloudflare_zone" {
+  type        = string
+  description = "Cloudflare zone, will be set by workspace variable."
+}

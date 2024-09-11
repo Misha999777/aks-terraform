@@ -1,0 +1,15 @@
+set provider: azure
+policy: sync
+azure.useWorkloadIdentityExtension: true
+azure.resourceGroup: ${rg_name}
+azure.subscriptionId: ${subscription_id}
+azure.tenantId: ${tenant_id}
+extraArgs.txt-wildcard-replacement: wildcard
+serviceAccount.annotations."azure\.workload\.identity/client-id": ${client_id}
+podLabels."azure\.workload\.identity/use": true
+txtOwnerId: external-dns
+logLevel: info
+resources.requests.cpu: 10m
+resources.requests.memory: 32Mi
+resources.limits.cpu: 50m
+resources.limits.memory: 64Mi
