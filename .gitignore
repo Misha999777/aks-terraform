@@ -1,0 +1,7 @@
+.idea/
+
+.terraform/
+
+*.tfplan
+*.tfstate
+*.tfstate.*
