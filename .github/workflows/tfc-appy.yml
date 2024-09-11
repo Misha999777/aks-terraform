@@ -5,23 +5,31 @@ on:
 
 concurrency: production
 
+env:
+  TF_CLOUD_ORGANIZATION: ${{ vars.TF_CLOUD_ORGANIZATION }}
+  TF_WORKSPACE: ${{ vars.TF_WORKSPACE }}
+  TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  TF_DIRECTORY: "."
+
 jobs:
-  terraform-cloud-apply-run:
-    runs-on: ubuntu-latest
+  terraform-apply:
+    runs-on: "ubuntu-latest"
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.3.1
+        id: upload
+        with:
+          workspace: ${{ env.TF_WORKSPACE }}
+          directory: ${{ env.TF_DIRECTORY }}
 
-      - name: Check TF_CLOUD_ORGANIZATION and TF_WORKSPACE
-        run: |
-          echo "TF_CLOUD_ORGANIZATION=${{ vars.TF_CLOUD_ORGANIZATION }}"
-          echo "TF_WORKSPACE=${{ env.TF_WORKSPACE }}"
+      - uses: hashicorp/tfc-workflows-github/actions/create-run@v1.3.1
+        id: create-run
+        with:
+          workspace: ${{ env.TF_WORKSPACE }}
+          configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
 
-      - name: Check if TF_API_TOKEN is set
-        run: |
-          if [ -z "${{ secrets.TF_API_TOKEN }}" ]; then
-            echo "TF_API_TOKEN is not set"
-            exit 1
-          else
-            echo "TF_API_TOKEN is set"
-          fi
+      - uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.3.1
+        id: apply
+        with:
+          run: ${{ steps.create-run.outputs.run_id }}
+          comment: "Confirmed from GitHub Actions CI"
