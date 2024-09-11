@@ -51,14 +51,8 @@ resource "azurerm_storage_account" "storage" {
 
 resource "azurerm_storage_container" "blob_container" {
   storage_account_name  = azurerm_storage_account.storage.name
-  name                  = "example-container"
+  name                  = "cgm-container"
   container_access_type = "private"
-}
-
-# DNS zone
-resource "azurerm_dns_zone" "dns-zone" {
-  resource_group_name = azurerm_resource_group.rg.name
-  name                = var.domain_name
 }
 
 # identity
@@ -68,21 +62,12 @@ resource "azurerm_user_assigned_identity" "workload-identity" {
   name                = "aks-workload-identity"
 }
 
-resource "azurerm_federated_identity_credential" "workload-identity-credential-cgm" {
+resource "azurerm_federated_identity_credential" "workload-identity-credential" {
   resource_group_name = azurerm_resource_group.rg.name
-  name                = "aks-workload-identity-credential-cgm"
+  name                = "aks-workload-identity-credential"
   parent_id           = azurerm_user_assigned_identity.workload-identity.id
   issuer              = azurerm_kubernetes_cluster.k8s.oidc_issuer_url
   subject             = "system:serviceaccount:cgm:cgm-sa"
-  audience            = ["api://AzureADTokenExchange"]
-}
-
-resource "azurerm_federated_identity_credential" "workload-identity-credential-dns" {
-  resource_group_name = azurerm_resource_group.rg.name
-  name                = "aks-workload-identity-credential-dns"
-  parent_id           = azurerm_user_assigned_identity.workload-identity.id
-  issuer              = azurerm_kubernetes_cluster.k8s.oidc_issuer_url
-  subject             = "system:serviceaccount:external-dns:external-dns"
   audience            = ["api://AzureADTokenExchange"]
 }
 
@@ -90,10 +75,4 @@ resource "azurerm_role_assignment" "storage_blob_contributor" {
   principal_id         = azurerm_user_assigned_identity.workload-identity.principal_id
   role_definition_name = "Storage Blob Data Contributor"
   scope                = azurerm_storage_account.storage.id
-}
-
-resource "azurerm_role_assignment" "dns_zone_contributor" {
-  principal_id         =  azurerm_user_assigned_identity.workload-identity.principal_id
-  role_definition_name = "DNS Zone Contributor"
-  scope                = azurerm_dns_zone.dns-zone.id
 }

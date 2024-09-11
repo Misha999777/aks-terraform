@@ -22,13 +22,17 @@ variable "nodes_max" {
   description = "Maximum amount of nodes in node pool."
 }
 
-variable "domain_name" {
-  type        = string
-  default     = "cgm-azure.pp.ua"
-  description = "Domain name for the DNS zone."
+variable "github_username" {
+  type    = string
+  description = "GitHub username, will be set by workspace variables."
 }
 
-variable "cloudflare_zone" {
-  type        = string
-  description = "Cloudflare zone, will be set by workspace variable."
+variable "github_token" {
+  type    = string
+  description = "GitHub token, will be set by workspace variables."
+}
+
+variable "cloudflare_token" {
+  type    = string
+  description = "Cloudflare token, will be set by workspace variables."
 }

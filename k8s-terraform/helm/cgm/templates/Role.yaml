@@ -1,8 +1,0 @@
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: cgm-role
-rules:
-  - apiGroups: ["apps/v1"]
-    resources: ["pods","deployments","services","nodes"]
-    verbs: ["get", "list", "watch", "create", "update", "delete"]

@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: cgm-deployment
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: cgm
@@ -16,7 +15,7 @@ spec:
       serviceAccountName: cgm-sa
       containers:
         - name: cgm
-          image: ghcr.io/renevanosnabrugge/killerapp:latest
+          image: ghcr.io/misha999777/cgm-terraform/cgm-terraform:latest
           ports:
             - containerPort: 80
       imagePullSecrets:

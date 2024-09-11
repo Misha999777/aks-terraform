@@ -7,6 +7,7 @@ concurrency: production
 
 env:
   TF_CLOUD_ORGANIZATION: ${{ vars.TF_CLOUD_ORGANIZATION }}
+  TF_WORKSPACE: ${{ vars.TF_WORKSPACE }}
   TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
 jobs:
@@ -16,33 +17,19 @@ jobs:
       - uses: actions/checkout@v3
 
       - uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.3.1
-        id: upload-azure
+        id: upload
         with:
-          workspace: "cgm-azure"
-          directory: "./azure-terraform"
-      - uses: hashicorp/tfc-workflows-github/actions/create-run@v1.3.1
-        id: create-run-azure
-        with:
-          workspace: "cgm-azure"
-          configuration_version: ${{ steps.upload-azure.outputs.configuration_version_id }}
-      - uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.3.1
-        id: apply-azure
-        with:
-          run: ${{ steps.create-run-azure.outputs.run_id }}
-          comment: "Confirmed from GitHub Actions CI"
+          workspace: ${{ env.TF_WORKSPACE }}
+          directory: "./terraform"
 
-      - uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.3.1
-        id: upload-k8s
-        with:
-          workspace: "cgm-k8s"
-          directory: "./k8s-terraform"
       - uses: hashicorp/tfc-workflows-github/actions/create-run@v1.3.1
-        id: create-run-k8s
+        id: create
         with:
-          workspace: "cgm-k8s"
-          configuration_version: ${{ steps.upload-k8s.outputs.configuration_version_id }}
+          workspace: ${{ env.TF_WORKSPACE }}
+          configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
+
       - uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.3.1
-        id: apply-k8s
+        id: apply
         with:
-          run: ${{ steps.create-run-k8s.outputs.run_id }}
+          run: ${{ steps.create.outputs.run_id }}
           comment: "Confirmed from GitHub Actions CI"

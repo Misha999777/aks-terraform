@@ -1,0 +1,7 @@
+imageCredentials:
+  registry: ghcr.io
+  username: username
+  password: password
+
+azure:
+  clientId: clientId
