@@ -17,10 +17,8 @@ def connect_to_storage_with_identity():
         )
         containers = client_identity.list_containers()
         container_names = [container.name for container in containers]
-        print("Connect to Azure Storage succeeded. Found {} containers".format(len(container_names)))
         return container_names
     except Exception as e:
-        print("Connect to Azure Storage failed: {}".format(e))
         return []
 
 def list_kubernetes_pods(namespace):
@@ -31,10 +29,8 @@ def list_kubernetes_pods(namespace):
         pods = v1.list_namespaced_pod(namespace)
         
         pod_names = [pod.metadata.name for pod in pods.items]
-        print(f"Successfully retrieved {len(pod_names)} pods in namespace '{namespace}'.")
         return pod_names
     except Exception as e:
-        print(f"Failed to list pods: {e}")
         return []
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
@@ -58,5 +54,4 @@ if __name__ == "__main__":
     server_address = ('', 80)
     httpd = HTTPServer(server_address, SimpleHTTPRequestHandler)
 
-    print("Starting server on port 80...")
     httpd.serve_forever()
