@@ -1,12 +1,29 @@
 external-dns:
-  provider:
-    name: cloudflare
-  env:
-    - name: CF_API_TOKEN
-      valueFrom:
-        secretKeyRef:
-          name: cloudflare-api-key
-          key: apiKey
+  fullnameOverride: external-dns
 
-cloudflare:
-  apiKey: apiKey
+  serviceAccount:
+    labels:
+      azure.workload.identity/use: "true"
+    annotations:
+      azure.workload.identity/client-id: client-id
+
+  podLabels:
+    azure.workload.identity/use: "true"
+
+  extraVolumes:
+    - name: azure-config-file
+      secret:
+        secretName: external-dns-azure
+
+  extraVolumeMounts:
+    - name: azure-config-file
+      mountPath: /etc/kubernetes
+      readOnly: true
+
+  provider:
+    name: azure
+
+azure:
+  tenantId: tenantId
+  subscriptionId: subscriptionId
+  resourceGroup: resourceGroup

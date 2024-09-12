@@ -1,3 +1,6 @@
+data "azurerm_client_config" "current" {
+}
+
 provider "helm" {
   kubernetes {
     host                   = azurerm_kubernetes_cluster.k8s.kube_config[0].host
@@ -16,7 +19,10 @@ resource "helm_release" "external-dns" {
   dependency_update = true
 
   values = [templatefile("./templates/external-dns-values.yaml.tftpl", {
-    apiKey = base64encode(var.cloudflare_token)
+    tenantId = data.azurerm_client_config.current.tenant_id
+    subscriptionId = data.azurerm_client_config.current.subscription_id
+    resourceGroup = azurerm_resource_group.rg.name
+    clientId = azurerm_user_assigned_identity.workload-identity.client_id
   })]
 
   depends_on = [azurerm_kubernetes_cluster.k8s]

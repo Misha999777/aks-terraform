@@ -28,6 +28,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   default_node_pool {
     name                = "agentpool"
     vm_size             = var.node_type
+    os_disk_size_gb     = 8
     min_count           = var.nodes_min
     max_count           = var.nodes_max
     enable_auto_scaling = true
@@ -55,6 +56,12 @@ resource "azurerm_storage_container" "blob_container" {
   container_access_type = "private"
 }
 
+# DNS zone
+resource "azurerm_dns_zone" "main" {
+  name                = var.domain_name
+  resource_group_name = azurerm_resource_group.rg.name
+}
+
 # identity
 resource "azurerm_user_assigned_identity" "workload-identity" {
   location            = azurerm_resource_group.rg.location
@@ -71,8 +78,23 @@ resource "azurerm_federated_identity_credential" "workload-identity-credential" 
   audience            = ["api://AzureADTokenExchange"]
 }
 
+resource "azurerm_federated_identity_credential" "workload-identity-credential-dns" {
+  resource_group_name = azurerm_resource_group.rg.name
+  name                = "aks-workload-identity-credential-dns"
+  parent_id           = azurerm_user_assigned_identity.workload-identity.id
+  issuer              = azurerm_kubernetes_cluster.k8s.oidc_issuer_url
+  subject             = "system:serviceaccount:external-dns:external-dns"
+  audience            = ["api://AzureADTokenExchange"]
+}
+
 resource "azurerm_role_assignment" "storage_blob_contributor" {
   principal_id         = azurerm_user_assigned_identity.workload-identity.principal_id
   role_definition_name = "Storage Blob Data Contributor"
   scope                = azurerm_storage_account.storage.id
+}
+
+resource "azurerm_role_assignment" "dns_zone_contributor" {
+  principal_id         = azurerm_user_assigned_identity.workload-identity.principal_id
+  role_definition_name = "DNS Zone Contributor"
+  scope                = azurerm_dns_zone.main.id
 }
