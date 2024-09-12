@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: cgm-service
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: cgm.cgm-azure.pp.ua
+    external-dns.alpha.kubernetes.io/hostname: cgm.cluster.cgm-azure.pp.ua
 spec:
   selector:
     app: cgm

@@ -24,7 +24,7 @@ variable "nodes_max" {
 
 variable "domain_name" {
   type    = string
-  default = "cgm-azure.pp.ua"
+  default = "cluster.cgm-azure.pp.ua"
   description = "Domain name to use with DNS zone."
 }
 
