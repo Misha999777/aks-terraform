@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cgm-ingress
+spec:
+  ingressClassName: webapprouting.kubernetes.azure.com
+  rules:
+    - host: cgm.cluster.cgm-azure.pp.ua
+      http:
+        paths:
+          - backend:
+              service:
+                name: cgm-service
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
