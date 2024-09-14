@@ -15,8 +15,10 @@ spec:
       serviceAccountName: cgm-sa
       containers:
         - name: cgm
-          image: ghcr.io/misha999777/cgm-terraform/cgm-terraform:latest
+          image: ghcr.io/happymary16/cgm/cgm:latest
+          args:
+            - cgm-service
           ports:
-            - containerPort: 80
+            - containerPort: 8080
       imagePullSecrets:
         - name: github-secret
