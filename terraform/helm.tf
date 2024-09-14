@@ -8,25 +8,27 @@ provider "helm" {
   }
 }
 
-resource "helm_release" "external-dns" {
-  name              = "cert-manager"
-  chart             = "./helm/cert-manager"
-  namespace         = "cert-manager"
-  create_namespace  = true
-  dependency_update = true
+resource "helm_release" "cert_manager" {
+  name       = "cert-manager"
+  chart      = "cert-manager"
+  repository = "https://charts.jetstack.io"
+  version    = "1.15.3"
+  namespace  = "cert-manager"
 
-  values = [templatefile("./templates/cert-manager-values.yaml.tfpl", {
-    email = "misha999777@gmail.com"
+  create_namespace  = true
+
+  values = [yamlencode({
+    installCRDs = true
   })]
 
   depends_on = [azurerm_role_assignment.dns_zone_contributor]
 }
 
 resource "helm_release" "cgm" {
-  name              = "cgm"
-  chart             = "./helm/cgm"
-  namespace         = "cgm"
-  create_namespace  = true
+  name      = "cgm"
+  chart     = "./helm/cgm"
+  namespace = "cgm"
+
   dependency_update = true
 
   values = [templatefile("./templates/cgm-values.yaml.tftpl", {
