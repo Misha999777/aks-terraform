@@ -87,3 +87,9 @@ resource "azurerm_role_assignment" "storage_blob_contributor" {
   role_definition_name = "Storage Blob Data Contributor"
   scope                = azurerm_storage_account.storage.id
 }
+
+resource "azurerm_role_assignment" "dns_zone_contributor" {
+  principal_id         = azurerm_user_assigned_identity.workload-identity.principal_id
+  role_definition_name = "DNS Zone Contributor"
+  scope                = azurerm_kubernetes_cluster.k8s.web_app_routing.web_app_routing_identity.client_id
+}
