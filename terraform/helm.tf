@@ -37,5 +37,5 @@ resource "helm_release" "cgm" {
     clientId = azurerm_user_assigned_identity.workload-identity.client_id
   })]
 
-  depends_on = [azurerm_role_assignment.storage_blob_contributor]
+  depends_on = [helm_release.cert_manager]
 }
