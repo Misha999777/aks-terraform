@@ -30,6 +30,7 @@ resource "helm_release" "cgm" {
   namespace = "cgm"
 
   dependency_update = true
+  create_namespace  = true
 
   values = [templatefile("./templates/cgm-values.yaml.tftpl", {
     username = var.github_username
