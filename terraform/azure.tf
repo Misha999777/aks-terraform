@@ -8,15 +8,15 @@ resource "azurerm_resource_group" "rg" {
   name     = random_pet.rg_name.id
 }
 
-# cluster
-resource "random_pet" "azurerm_kubernetes_cluster_name" {
-  prefix = "cluster"
-}
-
 # DNS zone
 resource "azurerm_dns_zone" "main" {
   name                = var.domain_name
   resource_group_name = azurerm_resource_group.rg.name
+}
+
+# cluster
+resource "random_pet" "azurerm_kubernetes_cluster_name" {
+  prefix = "cluster"
 }
 
 resource "azurerm_kubernetes_cluster" "k8s" {
