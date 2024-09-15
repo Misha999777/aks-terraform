@@ -36,13 +36,13 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   }
 
   default_node_pool {
-    name                = "agentpool"
-    vm_size             = var.node_type
-    os_disk_size_gb     = 32
-    min_count           = var.nodes_min
-    max_count           = var.nodes_max
-    enable_auto_scaling = true
-    type                = "VirtualMachineScaleSets"
+    name                 = "agentpool"
+    vm_size              = var.node_type
+    os_disk_size_gb      = 32
+    min_count            = var.nodes_min
+    max_count            = var.nodes_max
+    auto_scaling_enabled = true
+    type                 = "VirtualMachineScaleSets"
   }
 
   network_profile {
