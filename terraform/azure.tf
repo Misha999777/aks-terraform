@@ -43,6 +43,10 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     max_count            = var.nodes_max
     auto_scaling_enabled = true
     type                 = "VirtualMachineScaleSets"
+
+    upgrade_settings {
+      max_surge = "10%"
+    }
   }
 
   network_profile {
