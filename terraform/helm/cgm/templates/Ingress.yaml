@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: cgm-ingress
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   ingressClassName: webapprouting.kubernetes.azure.com
   tls:
