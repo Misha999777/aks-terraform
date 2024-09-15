@@ -1,6 +1,3 @@
-data "azurerm_client_config" "current" {
-}
-
 provider "helm" {
   kubernetes {
     host                   = azurerm_kubernetes_cluster.k8s.kube_config[0].host
@@ -11,29 +8,29 @@ provider "helm" {
   }
 }
 
-resource "helm_release" "external-dns" {
-  name              = "external-dns"
-  chart             = "./helm/external-dns"
-  namespace         = "external-dns"
-  create_namespace  = true
-  dependency_update = true
+resource "helm_release" "cert_manager" {
+  name       = "cert-manager"
+  chart      = "cert-manager"
+  repository = "https://charts.jetstack.io"
+  version    = "1.15.3"
+  namespace  = "cert-manager"
 
-  values = [templatefile("./templates/external-dns-values.yaml.tftpl", {
-    tenantId = data.azurerm_client_config.current.tenant_id
-    subscriptionId = data.azurerm_client_config.current.subscription_id
-    resourceGroup = azurerm_resource_group.rg.name
-    clientId = azurerm_user_assigned_identity.workload-identity.client_id
+  create_namespace  = true
+
+  values = [yamlencode({
+    installCRDs = true
   })]
 
-  depends_on = [azurerm_kubernetes_cluster.k8s]
+  depends_on = [azurerm_role_assignment.dns_zone_contributor]
 }
 
 resource "helm_release" "cgm" {
-  name              = "cgm"
-  chart             = "./helm/cgm"
-  namespace         = "cgm"
-  create_namespace  = true
+  name      = "cgm"
+  chart     = "./helm/cgm"
+  namespace = "cgm"
+
   dependency_update = true
+  create_namespace  = true
 
   values = [templatefile("./templates/cgm-values.yaml.tftpl", {
     username = var.github_username
@@ -41,5 +38,5 @@ resource "helm_release" "cgm" {
     clientId = azurerm_user_assigned_identity.workload-identity.client_id
   })]
 
-  depends_on = [helm_release.external-dns]
+  depends_on = [helm_release.cert_manager]
 }
