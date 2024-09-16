@@ -51,7 +51,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         self.wfile.write(response_message.encode('utf-8'))
 
 if __name__ == "__main__":
-    server_address = ('', 80)
+    server_address = ('', 8080)
     httpd = HTTPServer(server_address, SimpleHTTPRequestHandler)
 
     httpd.serve_forever()
