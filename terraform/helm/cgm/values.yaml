@@ -3,6 +3,9 @@ imageCredentials:
   username: username
   password: password
 
+acme:
+  email: email
+
 azure:
   clientId: clientId
 

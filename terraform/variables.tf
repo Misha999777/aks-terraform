@@ -32,6 +32,11 @@ variable "cloudflare_zone" {
   description = "Cloudflare zone id, will be set by workspace variables."
 }
 
+variable "acme_email" {
+  type    = string
+  description = "Email to use with ACME, will be set by workspace variables."
+}
+
 variable "github_username" {
   type    = string
   description = "GitHub username, will be set by workspace variables."
