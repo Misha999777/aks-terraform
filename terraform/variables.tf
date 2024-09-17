@@ -7,7 +7,7 @@ variable "resource_group_location" {
 variable "node_type" {
   type        = string
   default     = "standard_f4s_v2"
-  description = "Size of nodes in node pool."
+  description = "Type of nodes in node pool."
 }
 
 variable "nodes_min" {
@@ -22,10 +22,14 @@ variable "nodes_max" {
   description = "Maximum amount of nodes in node pool."
 }
 
-variable "domain_name" {
+variable "cluster_domain_name" {
   type    = string
-  default = "cluster.cgm-azure.pp.ua"
-  description = "Domain name to use with DNS zone."
+  description = "Domain name to use with DNS zone, will be set by workspace variables."
+}
+
+variable "cloudflare_zone" {
+  type    = string
+  description = "Cloudflare zone id, will be set by workspace variables."
 }
 
 variable "github_username" {
@@ -36,9 +40,4 @@ variable "github_username" {
 variable "github_token" {
   type    = string
   description = "GitHub token, will be set by workspace variables."
-}
-
-variable "cloudflare_zone" {
-  type    = string
-  description = "Cloudflare zone id, will be set by workspace variables."
 }

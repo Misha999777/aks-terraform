@@ -5,3 +5,6 @@ imageCredentials:
 
 azure:
   clientId: clientId
+
+cgm:
+  clusterDomain: domain

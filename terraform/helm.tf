@@ -33,9 +33,10 @@ resource "helm_release" "cgm" {
   create_namespace  = true
 
   values = [templatefile("./templates/cgm-values.yaml.tftpl", {
-    username = var.github_username
-    password = var.github_token
-    clientId = azurerm_user_assigned_identity.workload-identity.client_id
+    username      = var.github_username
+    password      = var.github_token
+    clientId      = azurerm_user_assigned_identity.workload-identity.client_id
+    clusterDomain = var.cluster_domain_name
   })]
 
   depends_on = [helm_release.cert_manager]

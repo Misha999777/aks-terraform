@@ -8,10 +8,10 @@ spec:
   ingressClassName: webapprouting.kubernetes.azure.com
   tls:
     - hosts:
-        - cgm.cluster.cgm-azure.pp.ua
+        - "cgm.{{ .Values.cgm.clusterDomain }}"
       secretName: cgm-certificate-secret
   rules:
-    - host: cgm.cluster.cgm-azure.pp.ua
+    - host: "cgm.{{ .Values.cgm.clusterDomain }}"
       http:
         paths:
           - backend:

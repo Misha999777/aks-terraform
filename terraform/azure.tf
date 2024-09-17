@@ -10,7 +10,7 @@ resource "azurerm_resource_group" "rg" {
 
 # DNS zone
 resource "azurerm_dns_zone" "main" {
-  name                = var.domain_name
+  name                = var.cluster_domain_name
   resource_group_name = azurerm_resource_group.rg.name
 }
 
