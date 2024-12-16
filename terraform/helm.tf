@@ -24,15 +24,15 @@ resource "helm_release" "cert_manager" {
   depends_on = [azurerm_role_assignment.dns_zone_contributor]
 }
 
-resource "helm_release" "cgm" {
-  name      = "cgm"
-  chart     = "./helm/cgm"
-  namespace = "cgm"
+resource "helm_release" "aksplorer" {
+  name      = "aksplorer"
+  chart     = "./helm/aksplorer"
+  namespace = "aksplorer"
 
   dependency_update = true
   create_namespace  = true
 
-  values = [templatefile("./templates/cgm-values.yaml.tftpl", {
+  values = [templatefile("./templates/aksplorer-values.yaml.tftpl", {
     clientId       = azurerm_user_assigned_identity.workload-identity.client_id
     githubUsername = var.github_username
     githubPassword = var.github_token

@@ -1,22 +1,22 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: cgm-ingress
+  name: aksplorer-ingress
   annotations:
     cert-manager.io/issuer: letsencrypt
 spec:
   ingressClassName: webapprouting.kubernetes.azure.com
   tls:
     - hosts:
-        - "cgm.{{ .Values.cgm.clusterDomain }}"
-      secretName: cgm-certificate-secret
+        - "aksplorer.{{ .Values.aksplorer.clusterDomain }}"
+      secretName: aksplorer-certificate-secret
   rules:
-    - host: "cgm.{{ .Values.cgm.clusterDomain }}"
+    - host: "aksplorer.{{ .Values.aksplorer.clusterDomain }}"
       http:
         paths:
           - backend:
               service:
-                name: cgm-service
+                name: aksplorer-service
                 port:
                   number: 80
             path: /

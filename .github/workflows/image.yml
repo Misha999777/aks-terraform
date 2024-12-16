@@ -29,6 +29,6 @@ jobs:
         with:
           context: ./sample-app
           platforms: linux/amd64
-          tags: ghcr.io/misha999777/cgm-terraform/cgm-terraform
+          tags: ghcr.io/misha999777/aks-terraform/aksplorer
           push: true
           provenance: false

@@ -9,5 +9,5 @@ acme:
 azure:
   clientId: clientId
 
-cgm:
+aksplorer:
   clusterDomain: domain

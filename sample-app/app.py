@@ -7,12 +7,12 @@ from kubernetes import client, config
 from azure.storage.blob import BlobServiceClient
 from azure.identity import DefaultAzureCredential
 
-NAMESPACE = 'cgm'
+NAMESPACE = 'aksplorer'
 
 def connect_to_storage_with_identity():
     try:
         client_identity = BlobServiceClient(
-            account_url="https://cgmt.blob.core.windows.net",
+            account_url="https://aksplorer.blob.core.windows.net",
             credential=DefaultAzureCredential()
         )
         containers = client_identity.list_containers()

@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cgm-service
+  name: aksplorer-service
 spec:
   selector:
-    app: cgm
+    app: aksplorer
   ports:
     - protocol: TCP
       port: 80

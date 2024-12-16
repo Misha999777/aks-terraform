@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cgm-deployment
+  name: aksplorer-deployment
 spec:
   selector:
     matchLabels:
-      app: cgm
+      app: aksplorer
   template:
     metadata:
       labels:
         azure.workload.identity/use: "true"
-        app: cgm
+        app: aksplorer
     spec:
-      serviceAccountName: cgm-sa
+      serviceAccountName: aksplorer-sa
       containers:
-        - name: cgm
+        - name: aksplorer
           imagePullPolicy: Always
-          image: ghcr.io/misha999777/cgm-terraform/cgm-terraform:latest
+          image: ghcr.io/misha999777/aks-terraform/aksplorer:latest
           ports:
             - containerPort: 8080
       imagePullSecrets:

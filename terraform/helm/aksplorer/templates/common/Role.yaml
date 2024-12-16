@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: cgm-role
+  name: aksplorer-role
 rules:
   - apiGroups: [""]
     resources: ["pods", "services", "nodes"]

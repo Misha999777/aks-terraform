@@ -59,14 +59,14 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 resource "azurerm_storage_account" "storage" {
   location                 = azurerm_resource_group.rg.location
   resource_group_name      = azurerm_resource_group.rg.name
-  name                     = "cgmt"
+  name                     = "aksplorer"
   account_tier             = "Standard"
   account_replication_type = "LRS"
 }
 
 resource "azurerm_storage_container" "blob_container" {
   storage_account_name  = azurerm_storage_account.storage.name
-  name                  = "cgm-container"
+  name                  = "aksplorer-container"
   container_access_type = "private"
 }
 
@@ -82,7 +82,7 @@ resource "azurerm_federated_identity_credential" "workload-identity-credential" 
   name                = "aks-workload-identity-credential"
   parent_id           = azurerm_user_assigned_identity.workload-identity.id
   issuer              = azurerm_kubernetes_cluster.k8s.oidc_issuer_url
-  subject             = "system:serviceaccount:cgm:cgm-sa"
+  subject             = "system:serviceaccount:aksplorer:aksplorer-sa"
   audience            = ["api://AzureADTokenExchange"]
 }
 
